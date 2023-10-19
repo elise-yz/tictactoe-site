@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicTacToe</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div class="svg-wrapper">
+        <svg viewBox="0 0 90 120" id="gameboard">
+            <line x1="30" y1="0" x2="30" y2="90" stroke="black" stroke-width="2"/>
+            <line x1="60" y1="0" x2="60" y2="90" stroke="black" stroke-width="2"/>
+            <line x1="0" y1="30" x2="90" y2="30" stroke="black" stroke-width="2"/>
+            <line x1="0" y1="60" x2="90" y2="60" stroke="black" stroke-width="2"/>
+            <rect id="0" x="1" y="1" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="1" x="32" y="1" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="2" x="62" y="1" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="3" x="1" y="32" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="4" x="32" y="32" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="5" x="62" y="32" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="6" x="1" y="62" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="7" x="32" y="62" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="8" x="62" y="62" width="26" height="26" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <rect id="x0" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o0" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x1" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o1" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x2" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o2" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x3" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o3" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x4" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o4" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x5" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o5" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x6" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o6" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x7" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o7" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="x8" x="0" y="90" width="20" height="20" stroke="#F0F8FF" fill="#56acd1"/>
+            <circle id="o8" cx="10" cy="100" r="10" stroke="#F0F8FF" fill="#56d1a6"/>
+            <rect id="reset" x="35" y="100" width="20" height="10" fill="white" stroke="black"/>
+            <text id="winner" x="0" y="100" font-family="Verdana" font-size="6" stroke="#F0F8FF" stroke-width="0.5" fill="blue">winner</text>
+            <rect id="cover" x="0" y="90" width="20" height="50" stroke="#F0F8FF" fill="#F0F8FF"/>
+            <text id="reset" x="37" y="107" font-family="Verdana" font-size="6" fill="black">reset</text>
+        </svg>
+    </div>
+
+    <script>
+        let game_state = {
+            "board_state": [".",".",".",".",".",".",".",".","."],
+            "player" : "X"
+        }
+
+        function play_turn(location){
+            winning_moves = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+            if(game_state["board_state"][parseInt(location)]=="."){ //if move is valid, make move
+                player = game_state["player"];
+                game_state["board_state"][parseInt(location)] = player
+                if(player=="X"){
+                    game_state["player"] = "O"
+                }
+                else{
+                    game_state["player"] = "X"
+                }
+            }
+            else{ //if move is invalid, log
+                console.log("Invalid Move")
+                return([-1,])
+            }
+            //check if game is over
+            for(x=0; x<winning_moves.length; x++){
+                if((game_state["board_state"][winning_moves[x][0]]=="X" && game_state["board_state"][winning_moves[x][1]]=="X" && game_state["board_state"][winning_moves[x][2]]=="X") || game_state["board_state"][winning_moves[x][0]]=="O" && game_state["board_state"][winning_moves[x][1]]=="O" && game_state["board_state"][winning_moves[x][2]]=="O"){ 
+                    console.log("Winner: " + player)
+                    return([1, player, location])
+                }
+            }
+            return([0, player, location])
+        }
+
+        function resetGame() {
+            reset_translations = ["translate(-5, 85)", 'translate(-35,85)', 'translate(-65,85)','translate(-5,55)', 'translate(-35,55)', 'translate(-65,55)', 'translate(-5,25)', 'translate(-35,25)', 'translate(-65,25)']
+            game_state["board_state"] = [".",".",".",".",".",".",".",".","."]
+            game_state["player"] = "X"
+            document.querySelector("#winner").setAttribute("transform", "translate(-20, 50)")
+            document.querySelector("#winner").setAttribute("font-size", "6")
+            for(x=0 ; x<9 ; x++) {
+                document.querySelector("#x"+x).setAttribute("transform", reset_translations[x])
+                document.querySelector("#o"+x).setAttribute("transform", reset_translations[x])
+            }
+        }
+
+        let gameBoard = document.querySelector("#gameboard")
+        gameBoard.addEventListener('click', gameClick)
+        function gameClick() {
+            if(event.target.id=="reset"){
+                resetGame()
+                return
+            }
+            turn = play_turn(event.target.id)
+            if(turn[0]==-1) {
+                return
+            }
+            translations = ["translate(5, -85)", 'translate(35,-85)', 'translate(65,-85)','translate(5,-55)', 'translate(35,-55)', 'translate(65,-55)', 'translate(5,-25)', 'translate(35,-25)', 'translate(65,-25)']
+            if(turn[1]=="X") {
+                document.querySelector("#x"+turn[2]).setAttribute("transform", translations[turn[2]])
+            }
+            else {
+                document.querySelector("#o"+turn[2]).setAttribute("transform", translations[turn[2]])
+            }
+            if(turn[0]==1) {
+                document.querySelector("#winner").setAttribute("transform", "translate(20, -50)")
+                document.querySelector("#winner").setAttribute("font-size", "15")
+            }
+        }
+    </script>
+</body>
+</html>
