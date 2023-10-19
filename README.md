@@ -1,2 +1,2 @@
 # tictactoe-site
-Website to play tictactoe. Utilizes Flask for backend.
+Website for two users to play tictactoe. Utilizes Flask for backend.
